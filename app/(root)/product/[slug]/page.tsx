@@ -9,12 +9,37 @@ import { APP_NAME } from "@/lib/contants";
 import ProductImages from "@/components/shared/product/product-image";
 import ProductPrice from "@/components/shared/product/product.price";
 
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: { slug: string };
+// }) {
+//   const product = await getProductBySlug(params.slug);
+//   if (!product) {
+//     return { title: "Product not found" };
+//   }
+//   return {
+//     title: `${product.name} - ${APP_NAME}`,
+//     description: product.description,
+//   };
+// }
+
+// const ProductDetails = async ({
+//   params: { slug },
+// }: {
+//   params: { slug: string };
+//   searchParams: { page: string; color: string; size: string };
+// }) => {
+//   const product = await getProductBySlug(slug);
+//   if (!product) notFound();
+import { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}) {
-  const product = await getProductBySlug(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params; // Resolve params Promise
+  const product = await getProductBySlug(resolvedParams.slug);
   if (!product) {
     return { title: "Product not found" };
   }
@@ -25,11 +50,28 @@ export async function generateMetadata({
 }
 
 const ProductDetails = async ({
-  params: { slug },
+  params,
+  searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { page: string; color: string; size: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
+  const resolvedParams = await params; // Resolve params Promise
+  const resolvedSearchParams = await searchParams; // Resolve searchParams Promise
+  const slug = resolvedParams.slug;
+  const page =
+    typeof resolvedSearchParams.page === "string"
+      ? resolvedSearchParams.page
+      : "1"; // Default to '1'
+  const color =
+    typeof resolvedSearchParams.color === "string"
+      ? resolvedSearchParams.color
+      : ""; // Default to empty string
+  const size =
+    typeof resolvedSearchParams.size === "string"
+      ? resolvedSearchParams.size
+      : ""; // Default to empty string
+
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
