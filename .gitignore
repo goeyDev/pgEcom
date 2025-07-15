@@ -40,4 +40,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-app/lib/sample-data.ts
+lib/sample-data.ts
