@@ -55,7 +55,7 @@ const sampleData = {
       numReviews: 5,
       stock: 10,
       description:
-        "A tricolour design brings a distinctive edge to these lightweight tracksuit pants made of diamond taffeta. ",
+        "A Test tricolour design brings a distinctive edge to these lightweight tracksuit pants made of diamond taffeta. ",
     },
   ],
 };
