@@ -61,6 +61,21 @@ export const sessions = pgTable("session", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
+// export const verificationTokens = pgTable(
+//   "verificationToken",
+//   {
+//     identifier: text("identifier").notNull(),
+//     token: text("token").notNull(),
+//     expires: timestamp("expires", { mode: "date" }).notNull(),
+//   },
+//   (verificationToken) => [
+//     {
+//       compositePk: primaryKey({
+//         columns: [verificationToken.identifier, verificationToken.token],
+//       }),
+//     },
+//   ]
+// );
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -68,13 +83,9 @@ export const verificationTokens = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (verificationToken) => [
-    {
-      compositePk: primaryKey({
-        columns: [verificationToken.identifier, verificationToken.token],
-      }),
-    },
-  ]
+  (vt) => ({
+    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+  })
 );
 
 export const authenticators = pgTable(

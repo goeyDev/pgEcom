@@ -12,6 +12,7 @@ import { SignOut } from "@/lib/actions/user.actions";
 
 export default async function UserButton() {
   const session = await auth();
+
   if (!session)
     return (
       <Link href="/api/auth/signin">
@@ -48,6 +49,14 @@ export default async function UserButton() {
               Order History
             </Link>
           </DropdownMenuItem>
+          {/* Admin */}
+          {session.user.role === "admin" && (
+            <DropdownMenuItem>
+              <Link className="w-full" href="/admin/overview">
+                Admin
+              </Link>
+            </DropdownMenuItem>
+          )}
 
           <DropdownMenuItem>
             <Link className="w-full" href="/user/profile">
