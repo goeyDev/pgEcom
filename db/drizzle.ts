@@ -7,7 +7,8 @@
 // const db = drizzle(sql, { schema });
 
 // export default db;
-// ---
+
+// ---online - ok to use
 import { drizzle } from "drizzle-orm/neon-serverless";
 import { Pool, neonConfig } from "@neondatabase/serverless";
 import * as schema from "./schema";
@@ -23,3 +24,13 @@ const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
 const db = drizzle({ client: pool, schema });
 
 export default db;
+
+// from Basir- ok to use
+// import * as schema from "./schema";
+
+// import { drizzle } from "drizzle-orm/vercel-postgres";
+// import { sql } from "@vercel/postgres";
+// const db = drizzle(sql, {
+//   schema,
+// });
+// export default db;
