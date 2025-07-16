@@ -49,6 +49,12 @@ export default async function UserButton() {
             </Link>
           </DropdownMenuItem>
 
+          <DropdownMenuItem>
+            <Link className="w-full" href="/user/profile">
+              Profile
+            </Link>
+          </DropdownMenuItem>
+
           <DropdownMenuItem className="p-0 mb-1">
             <form action={SignOut} className="w-full">
               <Button
