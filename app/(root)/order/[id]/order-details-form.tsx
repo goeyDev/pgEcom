@@ -26,6 +26,7 @@ import {
   createPayPalOrder,
   deliverOrder,
   updateOrderToPaidByCOD,
+  // updateOrderToPaidByCOD,
 } from "@/lib/actions/order.actions";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
