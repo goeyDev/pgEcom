@@ -5,6 +5,7 @@ import {
   shippingAddressSchema,
   signInFormSchema,
   signUpFormSchema,
+  updateUserSchema,
 } from "../validator";
 import { isRedirectError } from "next/dist/client/components/redirect-error"; //redirect cant be use for async
 import { hashSync } from "bcrypt-ts-edge";
@@ -174,6 +175,25 @@ export async function updateProfile(user: { name: string; email: string }) {
       })
       .where(eq(users.id, currentUser.id));
 
+    return {
+      success: true,
+      message: "User updated successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+export async function updateUser(user: z.infer<typeof updateUserSchema>) {
+  try {
+    await db
+      .update(users)
+      .set({
+        name: user.name,
+        role: user.role,
+      })
+      .where(eq(users.id, user.id));
+    revalidatePath("/admin/users");
     return {
       success: true,
       message: "User updated successfully",
