@@ -14,6 +14,7 @@ import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PaymentResult } from "@/types";
 import { PAGE_SIZE } from "../contants";
+// import { sendPurchaseReceipt } from "@/email";
 
 export async function getAllOrders({
   limit = PAGE_SIZE,
@@ -305,3 +306,45 @@ export async function deliverOrder(orderId: string) {
     return { success: false, message: formatError(err) };
   }
 }
+
+// export const updateOrderToPaid = async ({
+//   orderId,
+//   paymentResult,
+// }: {
+//   orderId: string;
+//   paymentResult?: PaymentResult;
+// }) => {
+//   const order = await db.query.orders.findFirst({
+//     columns: { isPaid: true },
+//     where: eq(orders.id, orderId),
+//     with: { orderItems: true },
+//   });
+//   if (!order) throw new Error("Order not found");
+//   if (order.isPaid) throw new Error("Order is already paid");
+//   await db.transaction(async (tx) => {
+//     for (const item of order.orderItems) {
+//       await tx
+//         .update(products)
+//         .set({
+//           stock: sql`${products.stock} - ${item.qty}`,
+//         })
+//         .where(eq(products.id, item.productId));
+//     }
+//     await tx
+//       .update(orders)
+//       .set({
+//         isPaid: true,
+//         paidAt: new Date(),
+//         paymentResult,
+//       })
+//       .where(eq(orders.id, orderId));
+//   });
+//   const updatedOrder = await db.query.orders.findFirst({
+//     where: eq(orders.id, orderId),
+//     with: { orderItems: true, user: { columns: { name: true, email: true } } },
+//   });
+//   if (!updatedOrder) {
+//     throw new Error("Order not found");
+//   }
+//   await sendPurchaseReceipt({ order: updatedOrder });
+// };
