@@ -2,7 +2,7 @@ import * as z from "zod";
 import { formatNumberWithDecimal } from "./utils";
 import { PAYMENT_METHODS } from "./contants";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { orderItems, orders, products } from "@/db/schema";
+import { orderItems, orders, products, reviews } from "@/db/schema";
 
 // USER
 export const signInFormSchema = z.object({
@@ -112,4 +112,12 @@ export const updateProfileSchema = z.object({
 export const updateUserSchema = updateProfileSchema.extend({
   id: z.string().min(1, "Id is required"),
   role: z.string().min(1, "Role is required"),
+});
+
+export const insertReviewSchema = createInsertSchema(reviews, {
+  rating: z.coerce
+    .number()
+    .int()
+    .min(1, "Rating must be at least 1")
+    .max(5, "Rating must be at most 5"),
 });
