@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { shippingAddressDefaultValues } from "@/lib/contants";
+import ShippingAddressMap from "@/components/shared/map";
 
 export default function ShippingAddressForm({
   address,
@@ -46,7 +47,11 @@ export default function ShippingAddressForm({
       router.push("/payment-method");
     });
   };
-
+  const setShippingLocation = ({ lat, lng }: { lat: number; lng: number }) => {
+    console.log(lat, lng);
+    form.setValue("lat", lat);
+    form.setValue("lng", lng);
+  };
   return (
     <>
       <CheckoutSteps current={1} />
@@ -131,6 +136,9 @@ export default function ShippingAddressForm({
                   </FormItem>
                 )}
               />
+            </div>
+            <div>
+              <ShippingAddressMap setShippingLocation={setShippingLocation} />
             </div>
 
             <div className="flex gap-2">
