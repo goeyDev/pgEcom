@@ -4,11 +4,11 @@ import { eq } from "drizzle-orm";
 import type { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
 import db from "./db/drizzle";
 import { carts, users } from "./db/schema";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import google from "next-auth/providers/google";
 
 export const config = {
   pages: {
@@ -19,6 +19,7 @@ export const config = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
+  // This line tell google to automatic insert user details to db
   adapter: DrizzleAdapter(db),
   providers: [
     CredentialsProvider({
@@ -51,11 +52,29 @@ export const config = {
         return null;
       },
     }),
+
+    // ... your existing Google provider
+
+    google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
+    }),
   ],
   callbacks: {
     jwt: async ({ token, user, trigger, session }: any) => {
       if (user) {
-        token.role = user.role; //add chapter 21
+        const dbUser = await db.query.users.findFirst({
+          where: eq(users.email, user.email),
+        });
+
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.name = dbUser.name;
+          token.email = dbUser.email;
+          token.role = dbUser.role;
+        }
+        //token.role = user.role; //add chapter 21
         if (trigger === "signIn" || trigger === "signUp") {
           const sessionCartId = (await cookies()).get("sessionCartId")?.value;
           if (!sessionCartId) throw new Error("Session Cart Not Found");

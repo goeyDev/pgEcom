@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import SeparatorWithOr from "@/components/shared/separator-or";
+
 import { auth } from "@/auth";
 import {
   Card,
@@ -13,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { APP_NAME } from "@/lib/contants";
 import CredentialsSignInForm from "./credentials-signin-form";
+import GoogleSignInForm from "./google-signin-form";
 
 // export const metadata: Metadata = {
 //   title: `Sign In - ${APP_NAME}`,
@@ -66,6 +69,10 @@ export default async function SignIn({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* <EmailSigninForm /> */}
+          {/* <SeparatorWithOr /> */}
+          <GoogleSignInForm />
+          <SeparatorWithOr />
           <CredentialsSignInForm />
         </CardContent>
       </Card>

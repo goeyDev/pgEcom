@@ -13,9 +13,11 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendEmail(options: {
+  // from: string;
   to: string;
   subject: string;
-  react: React.ReactElement;
+  html?: string;
+  react?: React.ReactElement;
 }) {
   // Use renderAsync and await both renders
   const [html, text] = await Promise.all([
@@ -24,7 +26,7 @@ export async function sendEmail(options: {
   ]);
 
   await transporter.sendMail({
-    from: `Support <${process.env.SENDER_EMAIL}>`,
+    // from: `Support <${process.env.SENDER_EMAIL}>`,
     to: options.to,
     subject: options.subject,
     html,

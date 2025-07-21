@@ -350,6 +350,6 @@ export const updateOrderToPaid = async ({
   if (!updatedOrder) {
     throw new Error("Order not found");
   }
-  console.log("sendPurchaseReceipt");
+
   await sendPurchaseReceipt({ order: updatedOrder });
 };

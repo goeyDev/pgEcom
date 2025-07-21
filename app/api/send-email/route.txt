@@ -1,0 +1,32 @@
+// app/api/send-email/route.ts
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+
+export const runtime = "nodejs"; // Force Node.js runtime
+
+export async function POST(request: Request) {
+  const { to, subject, html } = await request.json();
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.GEMAIL_USER,
+      pass: process.env.GEMAIL_APP_PASSWORD,
+    },
+  });
+
+  try {
+    await transporter.sendMail({
+      from: process.env.SENDER_EMAIL,
+      to,
+      subject,
+      html,
+    });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to send email" },
+      { status: 500 }
+    );
+  }
+}

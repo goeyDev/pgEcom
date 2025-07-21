@@ -13,8 +13,9 @@ export const sendPurchaseReceipt = async ({ order }: { order: Order }) => {
   if (!order.user.email) {
     throw new Error("User email is missing.");
   }
-
+  // add  from: process.env.SENDER_EMAIL
   await sendEmail({
+    // from: process.env.SENDER_EMAIL!,
     to: order.user.email,
     subject: "Order Confirmation",
     react: <PurchaseReceiptEmail order={order} />,

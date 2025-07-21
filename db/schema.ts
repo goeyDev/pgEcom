@@ -26,7 +26,7 @@ export const users = pgTable(
     emailVerified: timestamp("emailVerified", { mode: "date" }),
     image: text("image"),
     address: json("address").$type<ShippingAddress>(),
-    paymentMethod: text("peymentMethod"),
+    paymentMethod: text("paymentMethod"),
     createdAt: timestamp("createdAt").defaultNow(),
   },
   (table) => {
@@ -53,13 +53,16 @@ export const accounts = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (account) => [
-    {
-      compoundKey: primaryKey({
-        columns: [account.provider, account.providerAccountId],
-      }),
-    },
-  ]
+  (account) => ({
+    pk: primaryKey(account.provider, account.providerAccountId),
+  })
+  // (account) => [
+  //   {
+  //     compoundKey: primaryKey({
+  //       columns: [account.provider, account.providerAccountId],
+  //     }),
+  //   },
+  // ]
 );
 
 export const sessions = pgTable("session", {
